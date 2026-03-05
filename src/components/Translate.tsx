@@ -1,26 +1,13 @@
-import React, { useState, useEffect } from 'react';
-import { useTranslation } from '../contexts/LanguageContext';
+import React from 'react';
 
 interface TranslateProps {
-  children: string;
+  children: React.ReactNode;
 }
 
+/**
+ * This component is now a simple wrapper. 
+ * The actual translation is handled by the Google Translate widget in the DOM.
+ */
 export default function Translate({ children }: TranslateProps) {
-  const { translate, language } = useTranslation();
-  const [translatedText, setTranslatedText] = useState(children);
-
-  useEffect(() => {
-    let isMounted = true;
-    const doTranslate = async () => {
-      if (!children) return;
-      const result = await translate(children);
-      if (isMounted) {
-        setTranslatedText(result);
-      }
-    };
-    doTranslate();
-    return () => { isMounted = false; };
-  }, [children, language, translate]);
-
-  return <>{translatedText}</>;
+  return <>{children}</>;
 }

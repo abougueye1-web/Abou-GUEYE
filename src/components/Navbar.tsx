@@ -108,35 +108,7 @@ export default function Navbar({ isAdmin }: { isAdmin: boolean }) {
             )}
 
             {/* Language Selector */}
-            <div className="relative" ref={langRef}>
-              <button
-                onClick={() => setIsLangOpen(!isLangOpen)}
-                className="flex items-center space-x-1 text-sm font-medium text-slate-600 hover:text-red-600 transition-colors"
-              >
-                <Globe size={16} />
-                <span>{selectedLang.code}</span>
-                <ChevronDown size={14} className={`transition-transform duration-200 ${isLangOpen ? 'rotate-180' : ''}`} />
-              </button>
-
-              {isLangOpen && (
-                <div className="absolute right-0 mt-2 w-40 bg-white border border-slate-200 rounded-xl shadow-xl py-2 z-50 animate-in fade-in zoom-in duration-200">
-                  {languages.map((lang) => (
-                    <button
-                      key={lang.code}
-                      onClick={() => {
-                        setLanguage(lang.code);
-                        setIsLangOpen(false);
-                      }}
-                      className={`w-full text-left px-4 py-2 text-sm hover:bg-slate-50 transition-colors ${
-                        language === lang.code ? 'text-red-600 font-semibold' : 'text-slate-600'
-                      }`}
-                    >
-                      {lang.name}
-                    </button>
-                  ))}
-                </div>
-              )}
-            </div>
+            <div id="google_translate_element" className="min-w-[120px]"></div>
 
             {auth.currentUser ? (
               <button
