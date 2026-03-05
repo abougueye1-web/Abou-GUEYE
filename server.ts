@@ -5,29 +5,48 @@ import { fileURLToPath } from "url";
 import { initializeApp } from "firebase-admin/app";
 import { getFirestore } from "firebase-admin/firestore";
 import firebaseConfig from "./firebase-applet-config.json" with { type: "json" };
+import { GoogleGenAI } from "@google/genai";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // Initialize Firebase Admin for server-side access
-// Note: In this environment, we use the same config as client
 initializeApp({
   projectId: firebaseConfig.projectId,
 });
 const db = getFirestore();
-// Set database ID if provided
-if (firebaseConfig.firestoreDatabaseId) {
-  // Note: Admin SDK handles databaseId differently depending on version
-  // For simplicity in this environment, we assume default or handled by projectId
-}
 
 async function startServer() {
   const app = express();
-  const PORT = 3000;
+  const PORT = Number(process.env.PORT) || 3000;
+
+  app.use(express.json());
 
   // API Routes
   app.get("/api/health", (req, res) => {
     res.json({ status: "ok" });
+  });
+
+  // Translation API
+  app.post("/api/translate", async (req, res) => {
+    const { text, targetLanguage } = req.body;
+    
+    if (!text || !targetLanguage) {
+      return res.status(400).json({ error: "Missing text or targetLanguage" });
+    }
+
+    try {
+      const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+      const response = await ai.models.generateContent({
+        model: "gemini-3-flash-preview",
+        contents: `Translate the following text to ${targetLanguage}. Return ONLY the translated text, no extra words: "${text}"`,
+      });
+      
+      res.json({ translatedText: response.text || text });
+    } catch (error) {
+      console.error("Translation error:", error);
+      res.status(500).json({ error: "Translation failed" });
+    }
   });
 
   // Serve ads.txt dynamically from Firestore

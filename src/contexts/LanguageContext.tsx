@@ -1,5 +1,4 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { GoogleGenAI } from "@google/genai";
 
 export type Language = 'EN' | 'FR' | 'AR' | 'ES' | 'IT' | 'DE';
 
@@ -136,13 +135,22 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     if (translationCache[cacheKey]) return translationCache[cacheKey];
 
     try {
-      const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
-      const response = await ai.models.generateContent({
-        model: "gemini-3-flash-preview",
-        contents: `Translate the following text to ${language}. Return ONLY the translated text, no extra words: "${text}"`,
+      const response = await fetch('/api/translate', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          text,
+          targetLanguage: language,
+        }),
       });
+
+      if (!response.ok) throw new Error('Translation request failed');
       
-      const translated = response.text || text;
+      const data = await response.json();
+      const translated = data.translatedText || text;
+      
       setTranslationCache(prev => ({ ...prev, [cacheKey]: translated }));
       return translated;
     } catch (error) {
