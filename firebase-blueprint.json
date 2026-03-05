@@ -1,0 +1,125 @@
+{
+  "entities": {
+    "Article": {
+      "title": "Article",
+      "description": "Blog posts and news articles about immigration.",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string", "description": "The title of the article." },
+        "slug": { "type": "string", "description": "URL-friendly version of the title." },
+        "content": { "type": "string", "description": "Markdown content of the article." },
+        "excerpt": { "type": "string", "description": "A short summary of the article." },
+        "category": { "type": "string", "description": "The category of the article (e.g., News, Tips)." },
+        "tags": { "type": "array", "items": { "type": "string" }, "description": "Tags for the article." },
+        "image": { "type": "string", "description": "URL of the featured image." },
+        "author": { "type": "string", "description": "Author name." },
+        "createdAt": { "type": "string", "format": "date-time", "description": "Creation timestamp." },
+        "updatedAt": { "type": "string", "format": "date-time", "description": "Last update timestamp." },
+        "published": { "type": "boolean", "description": "Whether the article is public." }
+      },
+      "required": ["title", "slug", "content", "category", "createdAt"]
+    },
+    "VisaGuide": {
+      "title": "Visa Guide",
+      "description": "Detailed guides for different types of Canadian visas.",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string" },
+        "slug": { "type": "string" },
+        "type": { "type": "string", "enum": ["Work", "Student", "Tourist", "PR", "Express Entry", "PNP", "Family", "Work Permit"] },
+        "requirements": { "type": "string" },
+        "process": { "type": "string" },
+        "documents": { "type": "string" },
+        "processingTime": { "type": "string" },
+        "tips": { "type": "string" },
+        "image": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["title", "slug", "type", "requirements", "process"]
+    },
+    "Job": {
+      "title": "Job Listing",
+      "description": "Available jobs in Canada.",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string" },
+        "company": { "type": "string" },
+        "location": { "type": "string" },
+        "province": { "type": "string" },
+        "industry": { "type": "string" },
+        "salaryMin": { "type": "number" },
+        "salaryMax": { "type": "number" },
+        "description": { "type": "string" },
+        "applicationLink": { "type": "string" },
+        "featured": { "type": "boolean" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["title", "company", "location", "province", "industry"]
+    },
+    "StudyProgram": {
+      "title": "Study Program",
+      "description": "Universities, scholarships, and training programs.",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string" },
+        "institution": { "type": "string" },
+        "type": { "type": "string", "enum": ["University", "Scholarship", "Training"] },
+        "cost": { "type": "string" },
+        "duration": { "type": "string" },
+        "description": { "type": "string" },
+        "link": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["title", "institution", "type"]
+    },
+    "Settings": {
+      "title": "Settings",
+      "description": "Global site configuration including AdSense and ads.txt.",
+      "type": "object",
+      "properties": {
+        "adsenseHeader": { "type": "string" },
+        "adsenseSidebar": { "type": "string" },
+        "adsenseInArticle": { "type": "string" },
+        "adsenseFooter": { "type": "string" },
+        "adsenseMobile": { "type": "string" },
+        "adsTxt": { "type": "string" },
+        "siteName": { "type": "string" },
+        "siteDescription": { "type": "string" }
+      }
+    },
+    "Subscriber": {
+      "title": "Subscriber",
+      "description": "Newsletter subscribers.",
+      "type": "object",
+      "properties": {
+        "email": { "type": "string", "format": "email" },
+        "subscribedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["email", "subscribedAt"]
+    },
+    "ImmigrationProgram": {
+      "title": "Immigration Program",
+      "description": "Pathways to permanent residency in Canada.",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string" },
+        "icon": { "type": "string", "description": "Lucide icon name." },
+        "description": { "type": "string" },
+        "features": { "type": "array", "items": { "type": "string" } },
+        "link": { "type": "string" },
+        "color": { "type": "string", "description": "Tailwind color class (e.g., text-blue-600)." },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["title", "description", "features"]
+    }
+  },
+  "firestore": {
+    "/articles/{articleId}": { "schema": "Article", "description": "Collection of articles." },
+    "/visa_guides/{guideId}": { "schema": "VisaGuide", "description": "Collection of visa guides." },
+    "/jobs/{jobId}": { "schema": "Job", "description": "Collection of job listings." },
+    "/study_programs/{programId}": { "schema": "StudyProgram", "description": "Collection of study programs." },
+    "/settings/global": { "schema": "Settings", "description": "Global configuration document." },
+    "/subscribers/{subscriberId}": { "schema": "Subscriber", "description": "Collection of newsletter subscribers." },
+    "/immigration_programs/{programId}": { "schema": "ImmigrationProgram", "description": "Collection of immigration programs." }
+  }
+}
