@@ -16,6 +16,10 @@ import LifeGuide from './pages/LifeGuide';
 import Blog from './pages/Blog';
 import ArticleDetail from './pages/ArticleDetail';
 import EligibilityCalculator from './pages/EligibilityCalculator';
+import AboutUs from './pages/AboutUs';
+import Contact from './pages/Contact';
+import Terms from './pages/Terms';
+import Privacy from './pages/Privacy';
 
 // Admin
 import AdminDashboard from './pages/Admin/Dashboard';
@@ -69,6 +73,10 @@ export default function App() {
             <Route path="/blog" element={<Blog />} />
             <Route path="/blog/:slug" element={<ArticleDetail />} />
             <Route path="/eligibility" element={<EligibilityCalculator />} />
+            <Route path="/about" element={<AboutUs />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/terms" element={<Terms />} />
+            <Route path="/privacy" element={<Privacy />} />
             
             {/* Auth */}
             <Route path="/login" element={<Login />} />

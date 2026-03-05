@@ -45,6 +45,54 @@ async function startServer() {
     });
   });
 
+  // Serve ads.txt dynamically from Firestore
+  app.get("/ads.txt", async (req, res) => {
+    try {
+      if (!db) return res.type("text/plain").send("");
+      const settingsDoc = await db.collection("settings").doc("global").get();
+      if (settingsDoc.exists) {
+        const data = settingsDoc.data();
+        res.type("text/plain").send(data?.adsTxt || "");
+      } else {
+        res.type("text/plain").send("");
+      }
+    } catch (error) {
+      console.error("Error serving ads.txt:", error);
+      res.status(500).send("Error serving ads.txt");
+    }
+  });
+
+  // Sitemap.xml (Dynamic)
+  app.get("/sitemap.xml", async (req, res) => {
+    try {
+      if (!db) return res.status(500).send("Database not initialized");
+      const articles = await db.collection("articles").where("published", "==", true).get();
+      const visas = await db.collection("visa_guides").get();
+      
+      const domain = "https://canadavisaprogram.com";
+      
+      let xml = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>${domain}/</loc><priority>1.0</priority></url>
+  <url><loc>${domain}/visas</loc><priority>0.8</priority></url>
+  <url><loc>${domain}/jobs</loc><priority>0.8</priority></url>
+  <url><loc>${domain}/blog</loc><priority>0.8</priority></url>`;
+
+      articles.forEach(doc => {
+        xml += `\n  <url><loc>${domain}/blog/${doc.data().slug}</loc><priority>0.6</priority></url>`;
+      });
+
+      visas.forEach(doc => {
+        xml += `\n  <url><loc>${domain}/visas/${doc.data().slug}</loc><priority>0.6</priority></url>`;
+      });
+
+      xml += "\n</urlset>";
+      res.type("application/xml").send(xml);
+    } catch (error) {
+      res.status(500).send("Error generating sitemap");
+    }
+  });
+
   // Production vs Development
   if (process.env.NODE_ENV === "production") {
     const distPath = path.join(__dirname, "dist");
@@ -73,7 +121,5 @@ async function startServer() {
     console.log(`Server running in ${process.env.NODE_ENV || 'development'} mode on port ${PORT}`);
   });
 }
-
-startServer();
 
 startServer();

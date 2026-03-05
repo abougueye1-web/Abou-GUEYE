@@ -38,7 +38,7 @@ export default function Footer() {
                     C
                   </div>
                   <span className="text-xl font-bold tracking-tight text-white">
-                    Canada<span className="text-red-600">Visa</span>Guide
+                    Canada<span className="text-red-600">Visa</span>Program
                   </span>
                 </>
               )}
@@ -55,6 +55,7 @@ export default function Footer() {
               <li><Link to="/jobs" className="hover:text-red-500 transition-colors"><Translate>Job Portal</Translate></Link></li>
               <li><Link to="/study" className="hover:text-red-500 transition-colors"><Translate>Study in Canada</Translate></Link></li>
               <li><Link to="/programs" className="hover:text-red-500 transition-colors"><Translate>Immigration Programs</Translate></Link></li>
+              <li><Link to="/about" className="hover:text-red-500 transition-colors"><Translate>About Us</Translate></Link></li>
             </ul>
           </div>
 
@@ -91,11 +92,10 @@ export default function Footer() {
         </div>
 
         <div className="border-t border-slate-800 pt-8 flex flex-col md:flex-row justify-between items-center text-xs text-slate-500">
-          <p><Translate>© 2026 Canada Visa Guide. All rights reserved.</Translate></p>
+          <p><Translate>© 2026 Canada Visa Program. All rights reserved.</Translate></p>
           <div className="flex space-x-6 mt-4 md:mt-0">
             <Link to="/privacy" className="hover:text-slate-300"><Translate>Privacy Policy</Translate></Link>
             <Link to="/terms" className="hover:text-slate-300"><Translate>Terms of Service</Translate></Link>
-            <Link to="/cookies" className="hover:text-slate-300"><Translate>Cookie Policy</Translate></Link>
           </div>
         </div>
       </div>

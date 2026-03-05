@@ -78,7 +78,7 @@ export default function Navbar({ isAdmin }: { isAdmin: boolean }) {
                     C
                   </div>
                   <span className="text-xl font-bold tracking-tight text-slate-900">
-                    Canada<span className="text-red-600">Visa</span>Guide
+                    Canada<span className="text-red-600">Visa</span>Program
                   </span>
                 </>
               )}
